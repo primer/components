@@ -1,5 +1,11 @@
 # @primer/components
 
+## 28.2.6
+
+### Patch Changes
+
+- [#1308](https://github.com/primer/components/pull/1308) [`a8f3ca6d`](https://github.com/primer/components/commit/a8f3ca6dbff5c2619e067ad5118fcb784f8525bc) Thanks [@dgreif](https://github.com/dgreif)! - Focus zones will now update active-descendant on `mousemove` over focusable elements. ActionList has been updated to handle direct (key press) vs indirect (`mousemove`, DOM change, etc.) changes to active-descendant, and will use a distinct background color for the directly activated items.
+
 ## 28.2.5
 
 ### Patch Changes
