@@ -48,7 +48,8 @@ export {
   ButtonInvisible,
   ButtonTableList,
   ButtonClose,
-  ButtonGroup
+  ButtonGroup,
+  ButtonUnset
 } from './Button'
 export type {
   ButtonProps,
@@ -58,7 +59,8 @@ export type {
   ButtonInvisibleProps,
   ButtonTableListProps,
   ButtonCloseProps,
-  ButtonGroupProps
+  ButtonGroupProps,
+  ButtonUnsetProps
 } from './Button'
 export {default as Caret} from './Caret'
 export type {CaretProps} from './Caret'
