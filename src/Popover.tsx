@@ -1,7 +1,6 @@
 import classnames from 'classnames'
 import styled from 'styled-components'
-import BorderBox from './BorderBox'
-import {COMMON, get, LAYOUT, POSITION, SystemCommonProps, SystemLayoutProps, SystemPositionProps} from './constants'
+import {get} from './constants'
 import sx, {SxProp} from './sx'
 import {ComponentProps} from './utils/types'
 
@@ -23,10 +22,7 @@ type StyledPopoverProps = {
   caret?: CaretPosition
   relative?: boolean
   open?: boolean
-} & SystemCommonProps &
-  SystemLayoutProps &
-  SystemPositionProps &
-  SxProp
+} & SxProp
 
 const Popover = styled.div.attrs<StyledPopoverProps>(({className, caret}) => {
   return {
@@ -37,22 +33,16 @@ const Popover = styled.div.attrs<StyledPopoverProps>(({className, caret}) => {
   z-index: 100;
   display: ${props => (props.open ? 'block' : 'none')};
 
-  ${COMMON};
-  ${LAYOUT};
-  ${POSITION};
   ${sx};
 `
 
-const PopoverContent = styled(BorderBox)`
+const PopoverContent = styled.div<SxProp>`
   position: relative;
   width: 232px;
   margin-right: auto;
   margin-left: auto;
   padding: ${get('space.4')};
   background-color: ${get('colors.bg.overlay')};
-
-  ${COMMON};
-  ${LAYOUT};
 
   // Carets
   &::before,

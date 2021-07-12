@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {COMMON, get, SystemCommonProps} from './constants'
+import {get} from './constants'
 import sx, {SxProp} from './sx'
 import {ComponentProps} from './utils/types'
 
@@ -8,8 +8,7 @@ type StyledAvatarProps = {
   size?: number
   /** Sets the shape of the avatar to a square if true. If false, the avatar will be circular. */
   square?: boolean
-} & SystemCommonProps &
-  SxProp
+} & SxProp
 
 function getBorderRadius({size, square}: StyledAvatarProps) {
   if (square) {
@@ -28,7 +27,6 @@ const Avatar = styled.img.attrs<StyledAvatarProps>(props => ({
   line-height: ${get('lineHeights.condensedUltra')};
   vertical-align: middle;
   border-radius: ${props => getBorderRadius(props)};
-  ${COMMON};
   ${sx}
 `
 

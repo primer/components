@@ -2,8 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
 import Button, {ButtonPrimary, ButtonDanger, ButtonProps} from '../Button'
 import Flex from '../Flex'
-import Box from '../Box'
-import {get, SystemCommonProps, SystemPositionProps, COMMON, POSITION} from '../constants'
+import {get} from '../constants'
 import {useOnEscapePress} from '../hooks'
 import {useFocusTrap} from '../hooks/useFocusTrap'
 import sx, {SxProp} from '../sx'
@@ -62,7 +61,7 @@ export interface DialogProps {
    *
    * Warning: using a custom renderer may violate Primer UX principles.
    */
-  renderHeader?: React.FunctionComponent<DialogHeaderProps>
+  renderHeader?: React.FunctionComponent<DialogHeaderProps & SxProp>
 
   /**
    * Provide a custom render function for the dialog body. This content is
@@ -71,7 +70,7 @@ export interface DialogProps {
    *
    * Warning: using a custom renderer may violate Primer UX principles.
    */
-  renderBody?: React.FunctionComponent<DialogProps>
+  renderBody?: React.FunctionComponent<DialogProps & SxProp>
 
   /**
    * Provide a custom render function for the dialog footer. This content is
@@ -80,7 +79,7 @@ export interface DialogProps {
    *
    * Warning: using a custom renderer may violate Primer UX principles.
    */
-  renderFooter?: React.FunctionComponent<DialogProps>
+  renderFooter?: React.FunctionComponent<DialogProps & SxProp>
 
   /**
    * Specifies the buttons to be rendered in the Dialog footer.
@@ -180,7 +179,7 @@ interface StyledDialogProps {
   height?: DialogHeight
 }
 
-const StyledDialog = styled.div<StyledDialogProps & SystemCommonProps & SystemPositionProps & SxProp>`
+const StyledDialog = styled.div<StyledDialogProps & SxProp>`
   display: flex;
   flex-direction: column;
   background-color: ${get('colors.bg.overlay')};
@@ -205,12 +204,16 @@ const StyledDialog = styled.div<StyledDialogProps & SystemCommonProps & SystemPo
     }
   }
 
-  ${COMMON};
-  ${POSITION};
   ${sx};
 `
 
-const DefaultHeader: React.FC<DialogHeaderProps> = ({dialogLabelId, title, subtitle, dialogDescriptionId, onClose}) => {
+const DefaultHeader: React.FC<DialogHeaderProps & SxProp> = ({
+  dialogLabelId,
+  title,
+  subtitle,
+  dialogDescriptionId,
+  onClose
+}) => {
   const onCloseClick = useCallback(() => {
     onClose('close-button')
   }, [onClose])
@@ -226,10 +229,10 @@ const DefaultHeader: React.FC<DialogHeaderProps> = ({dialogLabelId, title, subti
     </Dialog.Header>
   )
 }
-const DefaultBody: React.FC<DialogProps> = ({children}) => {
+const DefaultBody: React.FC<DialogProps & SxProp> = ({children}) => {
   return <Dialog.Body>{children}</Dialog.Body>
 }
-const DefaultFooter: React.FC<DialogProps> = ({footerButtons}) => {
+const DefaultFooter: React.FC<DialogProps & SxProp> = ({footerButtons}) => {
   const {containerRef: footerRef} = useFocusZone({
     bindKeys: FocusKeys.ArrowHorizontal | FocusKeys.Tab,
     focusInStrategy: 'closest'
@@ -241,83 +244,93 @@ const DefaultFooter: React.FC<DialogProps> = ({footerButtons}) => {
   ) : null
 }
 
-const _Dialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<DialogProps>>((props, forwardedRef) => {
-  const {
-    title = 'Dialog',
-    subtitle = '',
-    renderHeader,
-    renderBody,
-    renderFooter,
-    onClose,
-    role = 'dialog',
-    width = 'xlarge',
-    height = 'auto'
-  } = props
-  const dialogLabelId = uniqueId()
-  const dialogDescriptionId = uniqueId()
-  const defaultedProps = {...props, title, subtitle, role, dialogLabelId, dialogDescriptionId}
+const _Dialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<DialogProps & SxProp>>(
+  (props, forwardedRef) => {
+    const {
+      title = 'Dialog',
+      subtitle = '',
+      renderHeader,
+      renderBody,
+      renderFooter,
+      onClose,
+      role = 'dialog',
+      width = 'xlarge',
+      height = 'auto'
+    } = props
+    const dialogLabelId = uniqueId()
+    const dialogDescriptionId = uniqueId()
+    const defaultedProps = {...props, title, subtitle, role, dialogLabelId, dialogDescriptionId}
 
-  const dialogRef = useRef<HTMLDivElement>(null)
-  const combinedRef = useCombinedRefs(dialogRef, forwardedRef)
-  const backdropRef = useRef<HTMLDivElement>(null)
-  useFocusTrap({containerRef: dialogRef, restoreFocusOnCleanUp: true})
+    const dialogRef = useRef<HTMLDivElement>(null)
+    const combinedRef = useCombinedRefs(dialogRef, forwardedRef)
+    const backdropRef = useRef<HTMLDivElement>(null)
+    useFocusTrap({containerRef: dialogRef, restoreFocusOnCleanUp: true})
 
-  useOnEscapePress(
-    (event: KeyboardEvent) => {
-      onClose('escape')
-      event.preventDefault()
-    },
-    [onClose]
-  )
+    useOnEscapePress(
+      (event: KeyboardEvent) => {
+        onClose('escape')
+        event.preventDefault()
+      },
+      [onClose]
+    )
 
-  const header = (renderHeader ?? DefaultHeader)(defaultedProps)
-  const body = (renderBody ?? DefaultBody)(defaultedProps)
-  const footer = (renderFooter ?? DefaultFooter)(defaultedProps)
+    const header = (renderHeader ?? DefaultHeader)(defaultedProps)
+    const body = (renderBody ?? DefaultBody)(defaultedProps)
+    const footer = (renderFooter ?? DefaultFooter)(defaultedProps)
 
-  return (
-    <>
-      <Portal>
-        <Backdrop ref={backdropRef}>
-          <StyledDialog
-            width={width}
-            height={height}
-            ref={combinedRef}
-            role={role}
-            aria-labelledby={dialogLabelId}
-            aria-describedby={dialogDescriptionId}
-          >
-            {header}
-            {body}
-            {footer}
-          </StyledDialog>
-        </Backdrop>
-      </Portal>
-    </>
-  )
-})
+    return (
+      <>
+        <Portal>
+          <Backdrop ref={backdropRef}>
+            <StyledDialog
+              width={width}
+              height={height}
+              ref={combinedRef}
+              role={role}
+              aria-labelledby={dialogLabelId}
+              aria-describedby={dialogDescriptionId}
+            >
+              {header}
+              {body}
+              {footer}
+            </StyledDialog>
+          </Backdrop>
+        </Portal>
+      </>
+    )
+  }
+)
 _Dialog.displayName = 'Dialog'
 
-const Header = styled(Box).attrs({as: 'header'})`
+const Header = styled.header<SxProp>`
   box-shadow: 0 1px 0 ${get('colors.border.overlay')};
   padding: ${get('space.2')};
   z-index: 1;
   flex-shrink: 0;
+
+  ${sx}
 `
-const Title = styled(Box)`
+const Title = styled.div<SxProp>`
   font-size: ${get('fontSizes.1')};
   font-weight: ${get('fontWeights.bold')};
+
+  ${sx}
 `
-const Subtitle = styled(Box)`
+const Subtitle = styled.div<SxProp>`
   font-size: ${get('fontSizes.0')};
   margin-top: ${get('space.1')};
   color: ${get('colors.text.tertiary')};
+
+  ${sx}
 `
-const Body = styled(Box)`
+const Body = styled.div<SxProp>`
   flex-grow: 1;
   overflow: auto;
   padding: ${get('space.3')};
+
+  ${sx}
 `
-const Footer = styled(Box).attrs({as: 'footer'})`
+const Footer = styled.footer<SxProp>`
   box-shadow: 0 -1px 0 ${get('colors.border.overlay')};
   padding: ${get('space.3')};
   display: flex;
@@ -332,6 +345,8 @@ const Footer = styled(Box).attrs({as: 'footer'})`
       margin-left: 0;
     }
   }
+
+  ${sx}
 `
 const buttonTypes = {
   normal: Button,

@@ -10,7 +10,6 @@ import {
   ButtonTableList
 } from '..'
 import {render, behavesAsComponent, checkExports} from '../utils/testing'
-import {COMMON, FLEX, LAYOUT, TYPOGRAPHY} from '../constants'
 import {render as HTMLRender, cleanup} from '@testing-library/react'
 import {axe, toHaveNoViolations} from 'jest-axe'
 import 'babel-polyfill'
@@ -20,7 +19,7 @@ expect.extend(toHaveNoViolations)
 function noop() {}
 
 describe('Button', () => {
-  behavesAsComponent({Component: Button, systemPropArray: [COMMON, LAYOUT]})
+  behavesAsComponent({Component: Button})
 
   checkExports('Button', {
     default: Button,
@@ -49,7 +48,7 @@ describe('Button', () => {
   })
 
   it('respects width props', () => {
-    expect(render(<Button width={200} />)).toHaveStyleRule('width', '200px')
+    expect(render(<Button sx={{width: 200}} />)).toHaveStyleRule('width', '200px')
   })
 
   it('respects the "disabled" prop', () => {
@@ -64,12 +63,12 @@ describe('Button', () => {
   })
 
   it('respects the "fontSize" prop over the "variant" prop', () => {
-    expect(render(<Button variant="small" fontSize={20} />)).toHaveStyleRule('font-size', '20px')
+    expect(render(<Button variant="small" sx={{fontSize: '20px'}} />)).toHaveStyleRule('font-size', '20px')
   })
 })
 
 describe('ButtonPrimary', () => {
-  behavesAsComponent({Component: ButtonPrimary, systemPropArray: [COMMON, LAYOUT]})
+  behavesAsComponent({Component: ButtonPrimary})
 
   it('renders a <button>', () => {
     expect(render(<ButtonPrimary />).type).toEqual('button')
@@ -82,7 +81,7 @@ describe('ButtonPrimary', () => {
 })
 
 describe('ButtonDanger', () => {
-  behavesAsComponent({Component: ButtonDanger, systemPropArray: [COMMON, LAYOUT]})
+  behavesAsComponent({Component: ButtonDanger})
 
   it('renders a <button>', () => {
     expect(render(<ButtonDanger />).type).toEqual('button')
@@ -95,7 +94,7 @@ describe('ButtonDanger', () => {
 })
 
 describe('ButtonOutline', () => {
-  behavesAsComponent({Component: ButtonOutline, systemPropArray: [COMMON, LAYOUT]})
+  behavesAsComponent({Component: ButtonOutline})
 
   it('renders a <button> by default', () => {
     expect(render(<ButtonOutline />).type).toEqual('button')
@@ -108,7 +107,7 @@ describe('ButtonOutline', () => {
 })
 
 describe('ButtonInvisible', () => {
-  behavesAsComponent({Component: ButtonOutline, systemPropArray: [COMMON, LAYOUT]})
+  behavesAsComponent({Component: ButtonOutline})
 
   it('renders a <button> by default', () => {
     expect(render(<ButtonInvisible />).type).toEqual('button')
@@ -121,9 +120,9 @@ describe('ButtonInvisible', () => {
 })
 
 describe('ButtonGroup', () => {
-  behavesAsComponent({Component: ButtonGroup, systemPropArray: [COMMON, FLEX, LAYOUT]})
+  behavesAsComponent({Component: ButtonGroup})
 })
 
 describe('ButtonTableList', () => {
-  behavesAsComponent({Component: ButtonTableList, systemPropArray: [COMMON, TYPOGRAPHY, LAYOUT]})
+  behavesAsComponent({Component: ButtonTableList})
 })

@@ -5,11 +5,10 @@ import {px, render, behavesAsComponent, checkExports} from '../utils/testing'
 import {render as HTMLRender, cleanup} from '@testing-library/react'
 import {axe, toHaveNoViolations} from 'jest-axe'
 import 'babel-polyfill'
-import {COMMON} from '../constants'
 expect.extend(toHaveNoViolations)
 
 describe('Avatar', () => {
-  behavesAsComponent({Component: Avatar, systemPropArray: [COMMON]})
+  behavesAsComponent({Component: Avatar})
 
   checkExports('Avatar', {
     default: Avatar
@@ -40,6 +39,6 @@ describe('Avatar', () => {
   })
 
   it('respects margin props', () => {
-    expect(render(<Avatar m={2} alt="" />)).toHaveStyleRule('margin', px(theme.space[2]))
+    expect(render(<Avatar sx={{m: 2}} alt="" />)).toHaveStyleRule('margin', px(theme.space[2]))
   })
 })

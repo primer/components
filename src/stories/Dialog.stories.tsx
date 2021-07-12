@@ -119,8 +119,6 @@ export const BasicDialog = ({width, height, subtitle}: DialogStoryProps) => {
           title="My Dialog"
           subtitle={subtitle ? 'This is a subtitle!' : undefined}
           onClose={onDialogClose}
-          width={width}
-          height={height}
           footerButtons={[
             {buttonType: 'danger', content: 'Delete the universe', onClick: onDialogClose},
             {buttonType: 'primary', content: 'Proceed', onClick: openSecondDialog, autoFocus: true}
@@ -128,7 +126,7 @@ export const BasicDialog = ({width, height, subtitle}: DialogStoryProps) => {
         >
           {lipsum}
           {secondOpen && (
-            <Dialog title="Inner dialog!" onClose={onSecondDialogClose} width="small">
+            <Dialog title="Inner dialog!" onClose={onSecondDialogClose} sx={{width, height}}>
               Hello world
             </Dialog>
           )}
@@ -160,11 +158,11 @@ function CustomHeader({
   return null
 }
 function CustomBody({children}: React.PropsWithChildren<DialogProps>) {
-  return <Dialog.Body bg="auto.red.3">{children}</Dialog.Body>
+  return <Dialog.Body sx={{bg: 'auto.red.3'}}>{children}</Dialog.Body>
 }
 function CustomFooter({footerButtons}: React.PropsWithChildren<DialogProps>) {
   return (
-    <Dialog.Footer bg="auto.yellow.3">
+    <Dialog.Footer sx={{bg: 'auto.yellow.3'}}>
       {footerButtons ? <Dialog.Buttons buttons={footerButtons} /> : null}
     </Dialog.Footer>
   )
@@ -179,8 +177,7 @@ export const WithCustomRenderers = ({width, height, subtitle}: DialogStoryProps)
         <Dialog
           title="My Dialog"
           subtitle={subtitle ? 'This is a subtitle!' : undefined}
-          width={width}
-          height={height}
+          sx={{width, height}}
           renderHeader={CustomHeader}
           renderBody={CustomBody}
           renderFooter={CustomFooter}
@@ -219,8 +216,6 @@ export const StressTest = ({width, height, subtitle}: DialogStoryProps) => {
               : undefined
           }
           onClose={onDialogClose}
-          width={width}
-          height={height}
           footerButtons={[
             ...manyButtons,
             {buttonType: 'danger', content: 'Delete the universe', onClick: onDialogClose},
@@ -229,7 +224,7 @@ export const StressTest = ({width, height, subtitle}: DialogStoryProps) => {
         >
           {lipsum}
           {secondOpen && (
-            <Dialog title="Inner dialog!" onClose={onSecondDialogClose} width="small">
+            <Dialog title="Inner dialog!" onClose={onSecondDialogClose} sx={{width, height}}>
               Hello world
             </Dialog>
           )}

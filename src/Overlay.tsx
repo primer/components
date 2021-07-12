@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, {ReactElement, useEffect, useLayoutEffect, useRef} from 'react'
-import {get, COMMON, POSITION, SystemPositionProps, SystemCommonProps} from './constants'
+import {get, SystemPositionProps} from './constants'
 import {ComponentProps} from './utils/types'
 import {useOverlay, TouchOrMouseEvent} from './hooks'
 import Portal from './Portal'
@@ -50,7 +50,7 @@ function getSlideAnimationStartingVector(anchorSide?: AnchorSide): {x: number; y
   return {x: 0, y: 0}
 }
 
-const StyledOverlay = styled.div<StyledOverlayProps & SystemCommonProps & SystemPositionProps & SxProp>`
+const StyledOverlay = styled.div<StyledOverlayProps & SxProp>`
   background-color: ${get('colors.bg.overlay')};
   box-shadow: ${get('shadows.overlay.shadow')};
   position: absolute;
@@ -75,8 +75,6 @@ const StyledOverlay = styled.div<StyledOverlayProps & SystemCommonProps & System
   :focus {
     outline: none;
   }
-  ${COMMON};
-  ${POSITION};
   ${sx};
 `
 export type OverlayProps = {

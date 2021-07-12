@@ -2,7 +2,7 @@ import {GitMergeIcon, GitPullRequestIcon, IssueClosedIcon, IssueOpenedIcon, Ques
 import React from 'react'
 import styled from 'styled-components'
 import {variant} from 'styled-system'
-import {COMMON, get, SystemCommonProps} from './constants'
+import {get} from './constants'
 import StyledOcticon from './StyledOcticon'
 import sx, {SxProp} from './sx'
 import {ComponentProps} from './utils/types'
@@ -71,8 +71,7 @@ const sizeVariants = variant({
 type StyledStateLabelBaseProps = {
   variant?: 'small' | 'normal'
   status?: keyof typeof octiconMap
-} & SystemCommonProps &
-  SxProp
+} & SxProp
 
 const StateLabelBase = styled.span<StyledStateLabelBaseProps>`
   display: inline-flex;
@@ -86,7 +85,6 @@ const StateLabelBase = styled.span<StyledStateLabelBaseProps>`
   border-style: solid;
   ${colorVariants};
   ${sizeVariants};
-  ${COMMON};
   ${sx};
 `
 
@@ -97,7 +95,7 @@ function StateLabel({children, status, variant: variantProp, ...rest}: StateLabe
   return (
     <StateLabelBase {...rest} variant={variantProp} status={status}>
       {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-      {status && <StyledOcticon mr={1} {...octiconProps} icon={octiconMap[status] || QuestionIcon} />}
+      {status && <StyledOcticon sx={{mr: 1}} {...octiconProps} icon={octiconMap[status] || QuestionIcon} />}
       {children}
     </StateLabelBase>
   )
